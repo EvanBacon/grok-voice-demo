@@ -33,13 +33,11 @@ const STATUS_LABEL: Record<VoiceStatus, string> = {
 export function VoiceComposer({
   status,
   error,
-  speech,
   level,
   onStop,
 }: {
   status: VoiceStatus;
   error: string | null;
-  speech?: string;
   level: SharedValue<number>;
   onStop: () => void;
 }) {
@@ -56,7 +54,6 @@ export function VoiceComposer({
         <PersonaBubble
           status={status}
           caption={error ?? STATUS_LABEL[status]}
-          speech={speech}
           size={72}
         />
       </View>

@@ -70,6 +70,9 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+// ~14% opacity of the accent, for the resting (unselected) tint.
+const SOFT = "24";
+
 function VoiceCard({
   voice,
   selected,
@@ -84,24 +87,26 @@ function VoiceCard({
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected }}
-      className={cn(
-        "w-40 rounded-2xl px-4 py-3.5 border active:opacity-80",
-        selected
-          ? "bg-user-bubble border-foreground"
-          : "bg-muted border-transparent",
-      )}
+      className="w-40 rounded-2xl px-4 py-3.5 active:opacity-80"
+      style={{ backgroundColor: selected ? voice.color : voice.color + SOFT }}
     >
       <View className="flex-row items-center justify-between mb-0.5">
-        <Text className="text-[17px] font-semibold text-foreground">
+        <Text
+          className="text-[17px] font-semibold"
+          style={{ color: selected ? "#fff" : voice.color }}
+        >
           {voice.label}
         </Text>
         {selected ? (
-          <View className="w-5 h-5 rounded-full bg-foreground items-center justify-center">
-            <Icon icon={Check} className="w-3 h-3 text-background" />
+          <View className="w-5 h-5 rounded-full bg-white/25 items-center justify-center">
+            <Icon icon={Check} className="w-3.5 h-3.5" style={{ color: "#fff" }} />
           </View>
         ) : null}
       </View>
-      <Text className="text-[13px] text-muted-foreground">
+      <Text
+        className={cn("text-[13px]", selected ? "" : "text-muted-foreground")}
+        style={selected ? { color: "rgba(255,255,255,0.85)" } : undefined}
+      >
         {voice.description}
       </Text>
     </Pressable>
@@ -125,24 +130,25 @@ function PersonalityItem({
       className="items-center gap-2 w-20 active:opacity-80"
     >
       <View
-        className={cn(
-          "w-16 h-16 rounded-full items-center justify-center border",
-          selected
-            ? "bg-foreground border-foreground"
-            : "bg-muted border-transparent",
-        )}
+        className="w-16 h-16 rounded-full items-center justify-center"
+        style={{
+          backgroundColor: selected
+            ? personality.color
+            : personality.color + SOFT,
+        }}
       >
         <Icon
           icon={personality.icon}
-          className={cn(
-            "w-6 h-6",
-            selected ? "text-background" : "text-foreground",
-          )}
+          className="w-6 h-6"
+          style={{ color: selected ? "#fff" : personality.color }}
         />
       </View>
       <Text
         numberOfLines={2}
-        className="text-[12px] text-center text-muted-foreground"
+        className={cn(
+          "text-[12px] text-center",
+          selected ? "text-foreground font-medium" : "text-muted-foreground",
+        )}
       >
         {personality.label}
       </Text>

@@ -16,15 +16,17 @@ export interface VoiceOption {
   id: string;
   label: string;
   description: string;
+  /** Accent color used for the tile's vibrant fill / tint. */
+  color: string;
 }
 
 // Built-in xAI voices. Descriptions follow the Grok app's phrasing.
 export const VOICES: VoiceOption[] = [
-  { id: "ara", label: "Ara", description: "Upbeat Female" },
-  { id: "eve", label: "Eve", description: "Soothing Female" },
-  { id: "leo", label: "Leo", description: "British Male" },
-  { id: "rex", label: "Rex", description: "Confident Male" },
-  { id: "sal", label: "Sal", description: "Balanced Neutral" },
+  { id: "ara", label: "Ara", description: "Upbeat Female", color: "#EC4899" },
+  { id: "eve", label: "Eve", description: "Soothing Female", color: "#8B5CF6" },
+  { id: "leo", label: "Leo", description: "British Male", color: "#3B82F6" },
+  { id: "rex", label: "Rex", description: "Confident Male", color: "#F59E0B" },
+  { id: "sal", label: "Sal", description: "Balanced Neutral", color: "#10B981" },
 ];
 
 // Appended to every personality so replies stay speech-friendly.
@@ -35,6 +37,8 @@ export interface PersonalityOption {
   id: string;
   label: string;
   icon: LucideIcon;
+  /** Accent color used for the tile's vibrant fill / tint. */
+  color: string;
   instructions: string;
 }
 
@@ -43,6 +47,7 @@ export const PERSONALITIES: PersonalityOption[] = [
     id: "assistant",
     label: "Assistant",
     icon: Smile,
+    color: "#6366F1",
     instructions:
       "You are a friendly, helpful voice assistant." + SPOKEN_STYLE,
   },
@@ -50,6 +55,7 @@ export const PERSONALITIES: PersonalityOption[] = [
     id: "therapist",
     label: "Therapist",
     icon: Stethoscope,
+    color: "#10B981",
     instructions:
       "You are a warm, empathetic listener. Ask gentle, open-ended questions, " +
       "reflect back what you hear, and never give medical advice." + SPOKEN_STYLE,
@@ -58,6 +64,7 @@ export const PERSONALITIES: PersonalityOption[] = [
     id: "storyteller",
     label: "Storyteller",
     icon: BookOpen,
+    color: "#F59E0B",
     instructions:
       "You are an imaginative storyteller. Spin vivid, engaging short stories " +
       "and invite the listener to shape where they go next." + SPOKEN_STYLE,
@@ -66,6 +73,7 @@ export const PERSONALITIES: PersonalityOption[] = [
     id: "kids-story",
     label: "Kids Story Time",
     icon: Sparkles,
+    color: "#EC4899",
     instructions:
       "You are a gentle storyteller for young children. Use simple words, a " +
       "playful tone, and keep everything wholesome and age-appropriate." +
@@ -75,6 +83,7 @@ export const PERSONALITIES: PersonalityOption[] = [
     id: "kids-trivia",
     label: "Kids Trivia",
     icon: Puzzle,
+    color: "#F97316",
     instructions:
       "You are an enthusiastic trivia host for kids. Ask fun, easy questions, " +
       "cheer them on, and gently help when they're stuck." + SPOKEN_STYLE,

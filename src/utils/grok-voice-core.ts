@@ -158,6 +158,8 @@ export function decodePCM16Base64(base64: string): Float32Array {
 export class GrokVoiceCore implements VoiceSession {
   private ws: WebSocket | null = null;
   private assistantBuffer = "";
+  private assistantId: string | null = null;
+  private turn = 0;
   private voice = "eve";
   private instructions = "";
 
@@ -246,13 +248,27 @@ export class GrokVoiceCore implements VoiceSession {
         break;
       case "response.output_audio_transcript.delta":
       case "response.audio_transcript.delta":
+        // Stream the assistant line in as it's spoken, updating one message.
+        if (!this.assistantId) {
+          this.assistantId =
+            msg.response_id ?? msg.item_id ?? `assistant-${this.turn++}`;
+        }
         this.assistantBuffer += msg.delta ?? "";
+        if (this.assistantBuffer) {
+          this.emitTranscript(
+            "assistant",
+            this.assistantBuffer,
+            this.assistantId ?? undefined,
+          );
+        }
         break;
       case "response.output_audio_transcript.done":
       case "response.audio_transcript.done": {
         const text = msg.transcript ?? this.assistantBuffer;
-        if (text) this.emitTranscript("assistant", text, msg.response_id);
+        const id = this.assistantId ?? msg.response_id ?? undefined;
+        if (text) this.emitTranscript("assistant", text, id);
         this.assistantBuffer = "";
+        this.assistantId = null;
         break;
       }
       case "error":

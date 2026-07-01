@@ -108,8 +108,12 @@ class NativeAudioBackend implements AudioBackend {
       },
       (event) => {
         // Half-duplex: while the agent is speaking (plus a short tail), drop
-        // mic frames so it doesn't hear — and respond to — its own voice.
-        if (Date.now() < this.playingUntil + PLAYBACK_TAIL_MS) return;
+        // mic frames so it doesn't hear — and respond to — its own voice. Feed
+        // the waveform silence so it reads flat rather than freezing.
+        if (Date.now() < this.playingUntil + PLAYBACK_TAIL_MS) {
+          onLevel(0);
+          return;
+        }
 
         const input = event.buffer.getChannelData(0);
         const inRate = event.buffer.sampleRate || SAMPLE_RATE;
@@ -131,9 +135,10 @@ class NativeAudioBackend implements AudioBackend {
     const node = this.queueNode;
     if (!node) return;
     const float = decodePCM16Base64(base64);
-    // Drive the waveform from the assistant's audio while it speaks.
-    this.onLevel?.(levelFromFloat(float));
-    // Extend the window during which the mic stays muted (half-duplex).
+    // Extend the window during which the mic stays muted (half-duplex). The
+    // waveform is intentionally NOT driven from playback — it should track the
+    // user's voice only, so it stays flat while the agent is speaking rather
+    // than looking like it's picking the agent up.
     const durationMs = (float.length / SAMPLE_RATE) * 1000;
     this.playingUntil = Math.max(Date.now(), this.playingUntil) + durationMs;
     this.decodeChain = this.decodeChain.then(async () => {

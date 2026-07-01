@@ -232,12 +232,6 @@ export default function ChatScreen() {
     [chat, voiceMessages],
   );
 
-  const lastAssistantSpeech = useMemo(
-    () =>
-      [...voice.transcript].reverse().find((e) => e.role === "assistant")?.text,
-    [voice.transcript],
-  );
-
   const renderMessage = useCallback(
     ({ item }: { item: ChatMessage }) => {
       if (item.role === "user") {
@@ -275,7 +269,6 @@ export default function ChatScreen() {
             <VoiceComposer
               status={voice.status}
               error={voice.error}
-              speech={lastAssistantSpeech}
               level={voice.level}
               onStop={voice.stop}
             />
