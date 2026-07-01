@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "grok-voice-demo",
+    "slug": "grok-voice-demo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "chat",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "infoPlist": {
+        "UIViewControllerBasedStatusBarAppearance": true,
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "server"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      "expo-asset",
+      "expo-font",
+      "expo-image",
+      "expo-web-browser",
+      "expo-system-ui",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
