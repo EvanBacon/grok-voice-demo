@@ -29,7 +29,7 @@ export const MOCK_CHATS: MockChat[] = [
   },
   {
     id: "7",
-    title: "Building an iMessage bot with Claude",
+    title: "Building an iMessage bot with Grok",
     daysAgo: 14,
     starred: true,
   },

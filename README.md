@@ -1,14 +1,17 @@
-# Chat Template
+# Grok Voice Agents Demo
 
 https://github.com/user-attachments/assets/864ca10c-be94-4c45-8e98-a71bff7a0042
 
-A high-performance AI chatbot template built with [Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction/). Ships with iOS 26 Liquid Glass support, a responsive web UI, and runs on iOS, Android, and web from a single codebase.
+A realtime voice agent demo built with [Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction/), powered by xAI's [Grok Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice). Talk to Grok in real time — spoken turns stream into a live chat UI — from a single codebase that runs on iOS, Android, and web. Ships with iOS 26 Liquid Glass support and a responsive web UI.
 
 ## Features
 
+- **Grok voice agent** -- realtime, low-latency voice conversations over a WebSocket with server-side Voice Activity Detection for natural turn-taking
+- **Cross-platform audio** -- browser Web Audio API on web and `react-native-audio-api` on iOS/Android, behind a shared core
+- **Voice settings** -- pick the voice and personality, applied to the session on the next start
+- **Streaming transcripts** -- spoken turns stream into the same message list as typed messages, with throttled ~30fps updates and markdown rendering
 - **Liquid Glass** -- glassmorphic prompt composer, navigation bars, and toolbar buttons on iOS 26 via `expo-glass-effect`
 - **Web-first sidebar** -- collapsible sidebar with Radix context menus, dropdown menus, and tooltips for a desktop-grade web experience
-- **Streaming messages** with throttled ~30fps updates, markdown rendering (code blocks, tables, inline formatting), and shimmer loading states
 - **Platform-adaptive layouts** -- native gesture-driven drawer on iOS/Android, sidebar + inset content panel on web
 - **Dark mode** -- automatic light/dark theme using OKLCH design tokens in Tailwind CSS v4
 - **Native UI controls** -- SwiftUI model picker menu, toolbar buttons, and haptic feedback on iOS
@@ -37,11 +40,10 @@ Copy `.env.example` to `.env` and fill in the values:
 cp .env.example .env
 ```
 
-| Variable              | Description                                                                                                                                                    |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ANTHROPIC_API_KEY`   | Your [Anthropic API key](https://console.anthropic.com/settings/keys). Used by the server-side chat API route (`app/api/chat+api.ts`) via `@ai-sdk/anthropic`. |
-| `XAI_API_KEY`         | Your [xAI API key](https://console.x.ai). Used by the Grok voice agent route (`app/api/voice-session+api.ts`) to mint realtime session tokens.                 |
-| `EXPO_PUBLIC_MOCK_AI` | Set to `1` to use mock streaming responses instead of calling the Anthropic API. Useful for UI development without an API key.                                 |
+| Variable              | Description                                                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `XAI_API_KEY`         | Your [xAI API key](https://console.x.ai). Used by the Grok voice agent route (`app/api/voice-session+api.ts`) to mint realtime session tokens. |
+| `EXPO_PUBLIC_MOCK_AI` | Set to `1` to use mock streaming responses instead of calling the API. Useful for UI development without an API key.                           |
 
 ### Voice Agent (Grok)
 
@@ -105,7 +107,7 @@ Edit `global.css` to change the design tokens. Colors use OKLCH for perceptual u
 
 ### Chat Backend
 
-The template ships with mock streaming responses in `app/index.tsx`. Replace `mockStreamResponse` with your API integration -- the streaming architecture (`createStreamingStore` + throttled token callback) is ready for real LLM APIs.
+The typed-chat backend streams from xAI's Grok models via `@ai-sdk/xai` in the server-side chat API route (`app/api/chat+api.ts`). Swap the model id or provider there to point at a different backend -- the streaming architecture (`createStreamingStore` + throttled token callback) is ready for any AI SDK provider.
 
 ### Database
 
