@@ -1,6 +1,7 @@
 # Grok Voice Agents Demo
 
-https://github.com/user-attachments/assets/864ca10c-be94-4c45-8e98-a71bff7a0042
+https://github.com/user-attachments/assets/5bbe3366-c520-4032-b7f1-09a76903b8bc
+
 
 A realtime voice agent demo built with [Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction/), powered by xAI's [Grok Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice). Talk to Grok in real time — spoken turns stream into a live chat UI — from a single codebase that runs on iOS, Android, and web. Ships with iOS 26 Liquid Glass support and a responsive web UI.
 
@@ -22,7 +23,7 @@ A realtime voice agent demo built with [Expo](https://expo.dev) and [Expo Router
 
 | Layer      | Technology                                                                                                              |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Framework  | Expo SDK 55, React Native 0.83, React 19                                                                                |
+| Framework  | Expo SDK 56                                                                                |
 | Navigation | Expo Router (file-based) with typed routes, [Legend List](https://legendapp.com/open-source/list/) for virtualized chat |
 | Styling    | Tailwind CSS v4 via [Uniwind](https://uniwind.dev/) + `tailwind-merge`                                                  |
 | Native UI  | `@expo/ui` (SwiftUI), `expo-symbols`, `expo-haptics`, `expo-glass-effect`                                               |
