@@ -19,7 +19,7 @@ import { MainHeader } from "@/components/main-header";
 import { useChat } from "@ai-sdk/react";
 import * as Haptics from "expo-haptics";
 import { Link } from "expo-router";
-import { Plus } from "lucide-react-native";
+import { AudioLines, Plus } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const USE_MOCK = process.env.EXPO_PUBLIC_MOCK_AI === "1";
@@ -249,6 +249,14 @@ export default function ChatScreen() {
             <Link href="/attachments" asChild>
               <PromptInputAction>
                 <Icon icon={Plus} className="w-5 h-5 text-muted-foreground" />
+              </PromptInputAction>
+            </Link>
+            <Link href="/voice" asChild>
+              <PromptInputAction>
+                <Icon
+                  icon={AudioLines}
+                  className="w-5 h-5 text-muted-foreground"
+                />
               </PromptInputAction>
             </Link>
             <PromptInputBody>

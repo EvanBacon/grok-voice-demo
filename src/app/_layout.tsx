@@ -136,6 +136,15 @@ function StackLayout() {
       />
 
       <Stack.Screen
+        name="voice"
+        options={{
+          title: "Voice",
+          presentation: "modal",
+          headerTransparent: GLASS,
+        }}
+      />
+
+      <Stack.Screen
         name="chats"
         options={{
           title: "Chats",

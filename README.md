@@ -40,7 +40,21 @@ cp .env.example .env
 | Variable              | Description                                                                                                                                                    |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ANTHROPIC_API_KEY`   | Your [Anthropic API key](https://console.anthropic.com/settings/keys). Used by the server-side chat API route (`app/api/chat+api.ts`) via `@ai-sdk/anthropic`. |
+| `XAI_API_KEY`         | Your [xAI API key](https://console.x.ai). Used by the Grok voice agent route (`app/api/voice-session+api.ts`) to mint realtime session tokens.                 |
 | `EXPO_PUBLIC_MOCK_AI` | Set to `1` to use mock streaming responses instead of calling the Anthropic API. Useful for UI development without an API key.                                 |
+
+### Voice Agent (Grok)
+
+Tap the audio-wave icon in the composer (or open `/voice`) to talk to Grok's
+realtime [Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice).
+The `/voice` screen runs on the **web** target, where it uses the browser Web
+Audio API to stream microphone audio (24kHz PCM16) over a WebSocket and play
+back Grok's spoken replies. Server-side Voice Activity Detection handles
+turn-taking, and live transcripts of both sides render on screen.
+
+The long-lived `XAI_API_KEY` never reaches the browser: the client fetches a
+short-lived ephemeral token from `/api/voice-session`, then opens the realtime
+WebSocket with that credential.
 
 ### Install & Run
 
