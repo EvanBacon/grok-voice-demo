@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import { ModelProvider } from "@/components/model-context";
+import { VoiceSettingsProvider } from "@/components/voice/voice-settings-context";
 import {
   DarkTheme,
   DefaultTheme,
@@ -25,26 +26,21 @@ const GLASS = isLiquidGlassAvailable();
 const IS_ANDROID = process.env.EXPO_OS === "android";
 const MODELS = [
   {
-    id: "opus-4.6",
-    label: "Opus 4.6",
+    id: "grok-4.5",
+    label: "Grok 4.5",
     subtitle: "Most capable for ambitious work",
   },
   {
-    id: "sonnet-4.6",
-    label: "Sonnet 4.6",
-    subtitle: "Most efficient for everyday tasks",
-  },
-  {
-    id: "haiku-4.5",
-    label: "Haiku 4.5",
-    subtitle: "Fastest for quick answers",
+    id: "grok-build-0.1",
+    label: "Grok Build 0.1",
+    subtitle: "Fast model for agentic coding",
   },
 ] as const;
 
 const MORE_MODELS = [
-  { id: "opus-4.5", label: "Opus 4.5" },
-  { id: "opus-3", label: "Opus 3" },
-  { id: "sonnet-4.5", label: "Sonnet 4.5" },
+  // { id: "opus-4.5", label: "Opus 4.5" },
+  { id: "grok-4.5", label: "Grok 4.5" },
+  { id: "grok-build-0.1", label: "Grok Build 0.1" },
 ] as const;
 
 const ALL_MODELS = [...MODELS, ...MORE_MODELS];
@@ -69,9 +65,11 @@ export default function RootLayout() {
     <ThemeProvider>
       <KeyboardProvider>
         <ModelProvider models={ALL_MODELS}>
-          <DrawerProvider>
-            <RootDrawer />
-          </DrawerProvider>
+          <VoiceSettingsProvider>
+            <DrawerProvider>
+              <RootDrawer />
+            </DrawerProvider>
+          </VoiceSettingsProvider>
         </ModelProvider>
         {process.env.EXPO_OS !== "ios" && <StatusBar style="auto" />}
       </KeyboardProvider>
@@ -136,11 +134,15 @@ function StackLayout() {
       />
 
       <Stack.Screen
-        name="voice"
+        name="voice-settings"
         options={{
-          title: "Voice",
-          presentation: "modal",
+          title: "Voice Settings",
+          presentation: "formSheet",
+          sheetAllowedDetents: "fitToContents",
+          sheetCornerRadius: IS_ANDROID ? 28 : undefined,
+          sheetGrabberVisible: true,
           headerTransparent: GLASS,
+          headerLargeTitleShadowVisible: false,
         }}
       />
 

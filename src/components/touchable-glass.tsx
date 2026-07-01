@@ -13,6 +13,7 @@ type TouchableGlassProps = GlassViewProps & {
   onPress?: () => void;
   onPressIn?: () => void;
   onPressOut?: () => void;
+  onLongPress?: () => void;
   disabled?: boolean;
 };
 
@@ -22,6 +23,7 @@ function TouchableGlassNative({
   onPress,
   onPressIn,
   onPressOut,
+  onLongPress,
   disabled,
   ref,
   ...rest
@@ -38,9 +40,18 @@ function TouchableGlassNative({
       if (onPressOut) scheduleOnRN(onPressOut);
     });
 
+  const longPress = Gesture.LongPress()
+    .enabled(!disabled && !!onLongPress)
+    .onStart(() => {
+      if (onLongPress) scheduleOnRN(onLongPress);
+    });
+
+  // Long press wins when the touch is held; otherwise it falls through to tap.
+  const gesture = onLongPress ? Gesture.Exclusive(longPress, tap) : tap;
+
   // TODO: Add iOS 18 bounce effect on blur.
   return (
-    <GestureDetector gesture={tap}>
+    <GestureDetector gesture={gesture}>
       <AppleGlassView
         ref={ref}
         collapsable={false}
@@ -55,6 +66,7 @@ function TouchableGlassFallback({
   onPress,
   onPressIn,
   onPressOut,
+  onLongPress,
   ref,
   disabled,
 
@@ -88,6 +100,7 @@ function TouchableGlassFallback({
       onPress={onTouchEndSuccess}
       onPressIn={onTouchBegin}
       onPressOut={onTouchEnd}
+      onLongPress={onLongPress}
       disabled={disabled}
     >
       <Animated.View

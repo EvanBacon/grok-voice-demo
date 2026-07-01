@@ -1,4 +1,5 @@
 import { Sidebar, SidebarToggle } from "@/components/sidebar";
+import { VoiceSettingsProvider } from "@/components/voice/voice-settings-context";
 import "@/global.css";
 import { Slot } from "expo-router";
 import { useState } from "react";
@@ -9,7 +10,8 @@ export default function RootLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <View className="flex h-dvh w-full flex-row bg-sidebar">
+    <VoiceSettingsProvider>
+      <View className="flex h-dvh w-full flex-row bg-sidebar">
       <Sidebar
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen((v) => !v)}
@@ -41,6 +43,7 @@ export default function RootLayout() {
           <Slot />
         </View>
       </View>
-    </View>
+      </View>
+    </VoiceSettingsProvider>
   );
 }

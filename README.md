@@ -45,16 +45,32 @@ cp .env.example .env
 
 ### Voice Agent (Grok)
 
-Tap the audio-wave icon in the composer (or open `/voice`) to talk to Grok's
-realtime [Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice).
-The `/voice` screen runs on the **web** target, where it uses the browser Web
-Audio API to stream microphone audio (24kHz PCM16) over a WebSocket and play
-back Grok's spoken replies. Server-side Voice Activity Detection handles
-turn-taking, and live transcripts of both sides render on screen.
+Tap the audio-wave icon in the chat composer to talk to Grok's realtime
+[Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice)
+without leaving the conversation. The composer turns into a live voice bar
+(persona orb + waveform + stop) and the spoken turns stream into the same
+message list as typed messages. It streams microphone audio (24kHz PCM16) over
+a WebSocket and plays back Grok's spoken replies; server-side Voice Activity
+Detection handles turn-taking. The sliders icon opens **Voice Settings** to pick
+the voice and personality (both applied to the session on the next start).
 
-The long-lived `XAI_API_KEY` never reaches the browser: the client fetches a
-short-lived ephemeral token from `/api/voice-session`, then opens the realtime
-WebSocket with that credential.
+The long-lived `XAI_API_KEY` never reaches the client: it fetches a short-lived
+ephemeral token from `/api/voice-session`, then opens the realtime WebSocket
+with that credential.
+
+The audio layer is platform-split behind a shared core (`grok-voice-core.ts`):
+
+- **Web** (`grok-voice.ts`) — browser Web Audio API (`getUserMedia` + an
+  AudioWorklet for capture, `AudioContext` scheduling for playback). The token
+  is passed via the WebSocket subprotocol, since browsers can't set headers.
+- **iOS / Android** (`grok-voice.native.ts`) — [`react-native-audio-api`](https://github.com/software-mansion/react-native-audio-api)
+  (`AudioRecorder` for capture, `AudioBufferQueueSourceNode` for playback). The
+  token goes in an `Authorization` header. iOS uses the `voiceChat` audio-session
+  mode so hardware echo cancellation keeps the agent from hearing itself.
+
+> Native requires a rebuild after install (`npx expo run:ios` / `run:android`)
+> for the `react-native-audio-api` config plugin (mic permission + audio
+> session) to take effect. Echo cancellation needs a physical device.
 
 ### Install & Run
 
