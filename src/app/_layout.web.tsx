@@ -1,3 +1,4 @@
+import { DEFAULT_MODELS, ModelProvider } from "@/components/model-context";
 import { Sidebar, SidebarToggle } from "@/components/sidebar";
 import { VoiceSettingsProvider } from "@/components/voice/voice-settings-context";
 import "@/global.css";
@@ -10,7 +11,8 @@ export default function RootLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <VoiceSettingsProvider>
+    <ModelProvider models={DEFAULT_MODELS}>
+      <VoiceSettingsProvider>
       <View className="flex h-dvh w-full flex-row bg-sidebar">
       <Sidebar
         isOpen={sidebarOpen}
@@ -44,6 +46,7 @@ export default function RootLayout() {
         </View>
       </View>
       </View>
-    </VoiceSettingsProvider>
+      </VoiceSettingsProvider>
+    </ModelProvider>
   );
 }

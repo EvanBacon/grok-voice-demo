@@ -6,6 +6,19 @@ export type Model = {
   subtitle?: string;
 };
 
+export const DEFAULT_MODELS: readonly Model[] = [
+  {
+    id: "grok-4.5",
+    label: "Grok 4.5",
+    subtitle: "Most capable for ambitious work",
+  },
+  {
+    id: "grok-build-0.1",
+    label: "Grok Build 0.1",
+    subtitle: "Fast model for agentic coding",
+  },
+];
+
 type ModelContextValue = {
   models: readonly Model[];
   selectedModel: string;

@@ -14,6 +14,8 @@ import {
   View,
 } from "react-native";
 
+import { useModel } from "@/components/model-context";
+
 import { useChatContext } from "./chat-context";
 import { useConversationContext } from "./conversation";
 
@@ -85,6 +87,10 @@ export function PromptInputBody({
   /** Injected by <PromptInput> — the composer action buttons. */
   actions?: ReactNode[];
 }) {
+  const { models, selectedModel } = useModel();
+  const selectedLabel =
+    models.find((m) => m.id === selectedModel)?.label ?? "Model";
+
   // Separate textarea from submit button
   const textarea: ReactNode[] = [];
   let submit: ReactNode = null;
@@ -107,7 +113,9 @@ export function PromptInputBody({
           {actions}
           {/* Model selector mock */}
           <Pressable className="flex h-7 flex-row items-center gap-1.5 rounded-lg px-2 transition-colors hover:bg-accent">
-            <Text className="text-[12px] text-muted-foreground">Opus</Text>
+            <Text className="text-[12px] text-muted-foreground">
+              {selectedLabel}
+            </Text>
           </Pressable>
         </View>
         {submit}

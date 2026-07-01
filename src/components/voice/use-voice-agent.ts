@@ -1,10 +1,11 @@
 /**
- * Native voice-agent hook. Drives the custom `GrokVoiceSession` engine (Metro
- * resolves `@/utils/grok-voice` to `grok-voice.native.ts`) and exposes the
- * shared `VoiceAgent` shape the chat screen consumes.
+ * Voice-agent hook for every platform. Drives the custom `GrokVoiceSession`
+ * engine and exposes the shared `VoiceAgent` shape the chat screen consumes.
  *
- * Web uses `use-voice-agent.web.ts` (the Vercel AI SDK realtime hook); both
- * return the same interface.
+ * Metro resolves `@/utils/grok-voice` per platform: `grok-voice.native.ts` on
+ * native, `grok-voice.ts` (WebAudioBackend) on web. Both mint an ephemeral xAI
+ * token from `/api/voice-session` using `XAI_API_KEY` and open the realtime
+ * WebSocket with the `xai-client-secret.<token>` subprotocol — no AI Gateway.
  */
 import { useVoiceSettings } from "@/components/voice/voice-settings-context";
 import {
