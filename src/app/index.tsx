@@ -16,9 +16,11 @@ import {
 } from "@/components/chat";
 import { Icon } from "@/components/icon";
 import { MainHeader } from "@/components/main-header";
+import { useVoiceAgent } from "@/components/voice/use-voice-agent";
+import { VoiceComposer } from "@/components/voice/voice-composer";
 import { useChat } from "@ai-sdk/react";
 import * as Haptics from "expo-haptics";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { AudioLines, Plus } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -210,7 +212,25 @@ function useMockChat() {
 
 export default function ChatScreen() {
   const chat = USE_MOCK ? useMockChat() : useAIChat();
-  const { messages, isGenerating, streamingStore } = chat;
+  const voice = useVoiceAgent();
+  const router = useRouter();
+  const { isGenerating, streamingStore } = chat;
+
+  // Voice turns render in the same conversation as typed messages.
+  const voiceMessages: ChatMessage[] = useMemo(
+    () =>
+      voice.transcript.map((entry) => ({
+        id: `voice-${entry.id}`,
+        role: entry.role,
+        content: entry.text,
+      })),
+    [voice.transcript],
+  );
+
+  const mergedChat = useMemo(
+    () => ({ ...chat, messages: [...chat.messages, ...voiceMessages] }),
+    [chat, voiceMessages],
+  );
 
   const renderMessage = useCallback(
     ({ item }: { item: ChatMessage }) => {
@@ -234,36 +254,46 @@ export default function ChatScreen() {
 
   return (
     <>
-      <ChatProvider value={chat}>
+      <ChatProvider value={mergedChat}>
         <Conversation
           renderMessage={renderMessage}
           emptyState={
             <ConversationEmptyState
               title="Chat"
-              description="Send a message to get started"
+              description="Send a message or tap the wave to talk"
             />
           }
         >
           <ConversationScrollButton />
-          <PromptInput>
-            <Link href="/attachments" asChild>
-              <PromptInputAction>
-                <Icon icon={Plus} className="w-5 h-5 text-muted-foreground" />
-              </PromptInputAction>
-            </Link>
-            <Link href="/voice" asChild>
-              <PromptInputAction>
+          {voice.isActive ? (
+            <VoiceComposer
+              status={voice.status}
+              error={voice.error}
+              level={voice.level}
+              onStop={voice.stop}
+            />
+          ) : (
+            <PromptInput>
+              <Link href="/attachments" asChild>
+                <PromptInputAction>
+                  <Icon icon={Plus} className="w-5 h-5 text-muted-foreground" />
+                </PromptInputAction>
+              </Link>
+              <PromptInputAction
+                onPress={voice.start}
+                onLongPress={() => router.push("/voice-settings")}
+              >
                 <Icon
                   icon={AudioLines}
                   className="w-5 h-5 text-muted-foreground"
                 />
               </PromptInputAction>
-            </Link>
-            <PromptInputBody>
-              <PromptInputTextarea />
-              <PromptInputSubmit />
-            </PromptInputBody>
-          </PromptInput>
+              <PromptInputBody>
+                <PromptInputTextarea />
+                <PromptInputSubmit />
+              </PromptInputBody>
+            </PromptInput>
+          )}
         </Conversation>
       </ChatProvider>
       <MainHeader />

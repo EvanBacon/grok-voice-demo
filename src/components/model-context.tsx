@@ -23,7 +23,7 @@ export function ModelProvider({
   models: readonly Model[];
 }) {
   const [extendedThinking, setExtendedThinking] = useState(true);
-  const selectedModel = "sonnet-4.6";
+  const selectedModel = "grok-4.5";
 
   return (
     <ModelContext

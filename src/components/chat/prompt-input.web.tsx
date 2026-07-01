@@ -1,5 +1,11 @@
-import { ArrowUp, Paperclip } from "lucide-react";
-import { Children, type ReactNode, isValidElement } from "react";
+import { ArrowUp } from "lucide-react";
+import {
+  Children,
+  cloneElement,
+  type ReactElement,
+  type ReactNode,
+  isValidElement,
+} from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -19,18 +25,16 @@ import { useConversationContext } from "./conversation";
 export function PromptInput({ children }: { children: ReactNode }) {
   const { onPromptInputLayout } = useConversationContext();
 
-  // Separate action buttons from body (which contains textarea + submit)
+  // Separate the body (textarea + submit) from the action buttons; the actions
+  // are injected into the body's footer so index.tsx drives both platforms.
   const actions: ReactNode[] = [];
-  let body: ReactNode = null;
+  let body: ReactElement<{ actions?: ReactNode[] }> | null = null;
 
   Children.forEach(children, (child) => {
-    if (isValidElement(child) && (child.type as any) === PromptInputAction) {
+    if (isValidElement(child) && (child.type as any) === PromptInputBody) {
+      body = child as ReactElement<{ actions?: ReactNode[] }>;
+    } else {
       actions.push(child);
-    } else if (
-      isValidElement(child) &&
-      (child.type as any) === PromptInputBody
-    ) {
-      body = child;
     }
   });
 
@@ -40,7 +44,7 @@ export function PromptInput({ children }: { children: ReactNode }) {
       className="sticky bottom-0 z-10 mx-auto flex w-full max-w-4xl gap-2 bg-background px-2 pb-3 md:px-4 md:pb-4"
     >
       <View className="flex w-full flex-col rounded-2xl border border-border/30 bg-card/70 shadow-composer transition-shadow duration-300 focus-within:shadow-composer-focus">
-        {body}
+        {body ? cloneElement(body, { actions }) : null}
       </View>
     </View>
   );
@@ -52,13 +56,16 @@ export function PromptInput({ children }: { children: ReactNode }) {
 export function PromptInputAction({
   children,
   onPress,
+  onLongPress,
 }: {
   children: ReactNode;
   onPress?: () => void;
+  onLongPress?: () => void;
 }) {
   return (
     <Pressable
       onPress={onPress}
+      onLongPress={onLongPress}
       className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/40 transition-colors hover:bg-accent"
     >
       {children}
@@ -70,7 +77,14 @@ export function PromptInputAction({
  * Container wrapping the textarea and the footer row with submit + tools.
  * On web, PromptInputBody renders the textarea children PLUS a footer row.
  */
-export function PromptInputBody({ children }: { children: ReactNode }) {
+export function PromptInputBody({
+  children,
+  actions,
+}: {
+  children: ReactNode;
+  /** Injected by <PromptInput> — the composer action buttons. */
+  actions?: ReactNode[];
+}) {
   // Separate textarea from submit button
   const textarea: ReactNode[] = [];
   let submit: ReactNode = null;
@@ -90,10 +104,7 @@ export function PromptInputBody({ children }: { children: ReactNode }) {
       {/* Footer row: tools on left, submit on right */}
       <View className="flex flex-row items-center justify-between px-3 pb-3">
         <View className="flex flex-row items-center gap-1">
-          {/* Attachments button */}
-          <Pressable className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/40 transition-colors hover:bg-accent">
-            <Paperclip size={14} className="text-muted-foreground" />
-          </Pressable>
+          {actions}
           {/* Model selector mock */}
           <Pressable className="flex h-7 flex-row items-center gap-1.5 rounded-lg px-2 transition-colors hover:bg-accent">
             <Text className="text-[12px] text-muted-foreground">Opus</Text>

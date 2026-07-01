@@ -95,9 +95,9 @@ export function MainHeader() {
       <Stack.Toolbar placement="left">
         <Stack.Toolbar.Button icon="list.bullet" onPress={openDrawer} />
       </Stack.Toolbar>
-      <Stack.Toolbar placement="right">
+      {/* <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button icon="eyeglasses" />
-      </Stack.Toolbar>
+      </Stack.Toolbar> */}
     </>
   );
 }

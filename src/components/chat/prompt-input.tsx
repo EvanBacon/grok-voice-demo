@@ -74,6 +74,7 @@ function PromptInputError({ message }: { message?: string }) {
 export function PromptInputAction(props: {
   children: ReactNode;
   onPress?: () => void;
+  onLongPress?: () => void;
 }) {
   return (
     <TouchableGlass

@@ -1,11 +1,11 @@
-import { anthropic } from "@ai-sdk/anthropic";
+import { xai } from "@ai-sdk/xai";
 import { convertToModelMessages, streamText } from "ai";
 
 export async function POST(req: Request) {
   const { messages, model } = await req.json();
 
   const result = streamText({
-    model: anthropic(model ?? "claude-haiku-4-5-20251001"),
+    model: xai(model ?? "grok-4.5"),
     messages: await convertToModelMessages(messages),
   });
 
