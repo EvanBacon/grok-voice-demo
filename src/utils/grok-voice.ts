@@ -94,6 +94,8 @@ export class GrokVoiceSession {
   private playCursor = 0;
   private handlers: GrokVoiceHandlers;
   private assistantBuffer = "";
+  private voice = "eve";
+  private instructions = "";
 
   constructor(handlers: GrokVoiceHandlers = {}) {
     this.handlers = handlers;
@@ -107,6 +109,8 @@ export class GrokVoiceSession {
       if (!res.ok || !data.clientSecret) {
         throw new Error(data.error ?? "Could not create voice session.");
       }
+      if (data.voice) this.voice = data.voice;
+      if (data.instructions) this.instructions = data.instructions;
       await this.openSocket(data.clientSecret);
       await this.startMic();
     } catch (error) {
@@ -117,10 +121,10 @@ export class GrokVoiceSession {
   private openSocket(clientSecret: string): Promise<void> {
     return new Promise((resolve, reject) => {
       // Browsers can't set Authorization headers on a WebSocket, so the
-      // ephemeral token is passed via the subprotocol list.
+      // ephemeral token is passed via the subprotocol with xAI's prefix.
+      // https://docs.x.ai/developers/model-capabilities/audio/ephemeral-tokens
       const ws = new WebSocket(REALTIME_URL, [
-        "realtime",
-        `xai-insecure-api-key.${clientSecret}`,
+        `xai-client-secret.${clientSecret}`,
       ]);
       this.ws = ws;
 
@@ -128,6 +132,8 @@ export class GrokVoiceSession {
         this.send({
           type: "session.update",
           session: {
+            voice: this.voice,
+            instructions: this.instructions,
             input_audio_format: "pcm16",
             output_audio_format: "pcm16",
             turn_detection: { type: "server_vad" },
