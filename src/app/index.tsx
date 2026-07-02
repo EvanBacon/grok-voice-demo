@@ -1,4 +1,5 @@
 import {
+  AttachmentsButton,
   ChatProvider,
   Conversation,
   ConversationEmptyState,
@@ -20,8 +21,8 @@ import { useVoiceAgent } from "@/components/voice/use-voice-agent";
 import { VoiceComposer } from "@/components/voice/voice-composer";
 import { useChat } from "@ai-sdk/react";
 import * as Haptics from "expo-haptics";
-import { Link, useRouter } from "expo-router";
-import { AudioLines, Plus } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { AudioLines } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const USE_MOCK = process.env.EXPO_PUBLIC_MOCK_AI === "1";
@@ -274,11 +275,7 @@ export default function ChatScreen() {
             />
           ) : (
             <PromptInput>
-              <Link href="/attachments" asChild>
-                <PromptInputAction>
-                  <Icon icon={Plus} className="w-5 h-5 text-muted-foreground" />
-                </PromptInputAction>
-              </Link>
+              <AttachmentsButton />
               <PromptInputAction
                 onPress={voice.start}
                 onLongPress={() => router.push("/voice-settings")}

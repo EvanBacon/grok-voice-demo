@@ -13,6 +13,9 @@ export {
 // Message
 export { Message, MessageResponse } from "./message";
 
+// Attachments
+export { AttachmentsButton } from "./attachments-button";
+
 // Prompt Input
 export {
   PromptInput,

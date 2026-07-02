@@ -6,7 +6,7 @@
  * They expose a `default` state machine with boolean inputs — `listening`,
  * `thinking`, `speaking`, `asleep`. "idle" is simply all inputs off.
  *
- * Both the web (@rive-app/react-webgl2) and native (@rive-app/react-native)
+ * Both the web (@rive-app/react-canvas) and native (@rive-app/react-native)
  * Persona implementations read from this file so the two stay in sync.
  */
 
