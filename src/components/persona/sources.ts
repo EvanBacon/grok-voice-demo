@@ -6,9 +6,8 @@
  * They expose a `default` state machine with boolean inputs — `listening`,
  * `thinking`, `speaking`, `asleep`. "idle" is simply all inputs off.
  *
- * The native Persona (@rive-app/react-native) reads the `.riv` sources here.
- * The web Persona renders a CSS orb instead (the Rive web runtimes crash the
- * tab), so on web only the `PersonaState`/`PersonaVariant` types are used.
+ * Both the web (@rive-app/react-canvas) and native (@rive-app/react-native)
+ * Persona implementations read from this file so the two stay in sync.
  */
 
 export type PersonaState =
