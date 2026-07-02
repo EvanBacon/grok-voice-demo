@@ -6,8 +6,6 @@ module.exports = function (api) {
   };
 };
 
-
-
 // Workaround for facebook/react#34770: react-dom's development-only Component Performance
 // Track serializes changed props with unbounded `for...in` enumeration
 // (`addObjectToProperties` / `addObjectDiffToProperties`). Objects with a huge number of
