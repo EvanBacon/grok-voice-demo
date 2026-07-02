@@ -14,7 +14,6 @@
         "@radix-ui/react-dropdown-menu": "^2.1.16",
         "@radix-ui/react-popover": "^1.1.18",
         "@radix-ui/react-tooltip": "^1.2.8",
-        "@rive-app/react-canvas": "^4.29.4",
         "@rive-app/react-native": "^0.4.12",
         "ai": "^7.0.9",
         "clsx": "^2.1.1",
@@ -462,10 +461,6 @@
     "@react-native/normalize-colors": ["@react-native/normalize-colors@0.85.3", "", {}, "sha512-hj0PScZEhIbcOvQV5yMKX3ha4XEIOy/SVE1Rrpp0beW0dpNLOgSC7KDxGewmDnIHK9YdQUXGY9eMEfShUMIaZw=="],
 
     "@react-native/virtualized-lists": ["@react-native/virtualized-lists@0.85.3", "", { "dependencies": { "invariant": "^2.2.4", "nullthrows": "^1.1.1" }, "peerDependencies": { "@types/react": "^19.2.0", "react": "*", "react-native": "0.85.3" }, "optionalPeers": ["@types/react"] }, "sha512-dsCjI//OIPEUJMyNHp4l7zNLVjCx7bcaRUceOCkU+IB17hkbtbGWvi7HjGFSzy7FJGmS/MOlcfpb72xXiy1Oig=="],
-
-    "@rive-app/canvas": ["@rive-app/canvas@2.38.4", "", {}, "sha512-exs2Q5Y8liDB0IW7wo0ROZhA6FwddcK1ha+5vlN+ce05eOHjyIBwPWvPsGCGTHvSixInvpFa9Nd6c0Cjo16srQ=="],
-
-    "@rive-app/react-canvas": ["@rive-app/react-canvas@4.29.4", "", { "dependencies": { "@rive-app/canvas": "2.38.4" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0" } }, "sha512-VG6rtiGK55/cfWAlx7Hsoh79ujDdAP7oWsREipoxUSg/hpNwL6eRvnGEzhcxJoWYVtTzIny5C0+fTyVj0A+IYQ=="],
 
     "@rive-app/react-native": ["@rive-app/react-native@0.4.12", "", { "peerDependencies": { "react": "*", "react-native": "*", "react-native-nitro-modules": ">=0.35.10 <0.36" } }, "sha512-JfwRL54SlIiElAkRwCrSyQDZGs7MhW7+QoRSmnxRPCPxG8ZbFqj/XRRWs1uL9nizYdhyeLzMAfEdTtuvy73myQ=="],
 
